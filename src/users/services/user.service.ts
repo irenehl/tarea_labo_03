@@ -13,8 +13,11 @@ export class UserService {
     ) {}
 
     async createUser(params: CreateUserDto): Promise<UserDto> {
+        const { password } = params;
+        const cryptedPassword = await this.userRepository.bcryptPassword(password);
         const user = await this.userRepository.save(
             this.userRepository.create({
+                password: cryptedPassword,
                 ...params,
             })
         )

@@ -1,5 +1,6 @@
 import { BaseRepository } from "src/core/repositories/base.repository";
 import { User } from "../entities/user.entity";
+import { genSalt, hash } from 'bcryptjs';
 
 export class UserRepository extends BaseRepository<User> {
     async findAllUsers(): Promise<any> {
@@ -10,4 +11,10 @@ export class UserRepository extends BaseRepository<User> {
     
         return user;
       }
+
+      async bcryptPassword(password: string): Promise<string> {
+        const salt: string = await genSalt();
+        return hash(password, salt);
+      }
+    
 }
